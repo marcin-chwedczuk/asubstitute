@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASubstitute", "ASubstitute\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASubstitute.Test", "ASubstitute.Test\ASubstitute.Test.csproj", "{2369037E-3B05-4E68-BC29-F41259C97DAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSubstitute.Test", "NSubstitute.Test\NSubstitute.Test.csproj", "{F42D203F-6BFE-41D7-BA68-5917E1C13951}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{2369037E-3B05-4E68-BC29-F41259C97DAE}.Release|x64.Build.0 = Release|Any CPU
 		{2369037E-3B05-4E68-BC29-F41259C97DAE}.Release|x86.ActiveCfg = Release|Any CPU
 		{2369037E-3B05-4E68-BC29-F41259C97DAE}.Release|x86.Build.0 = Release|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Debug|x64.Build.0 = Debug|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Debug|x86.Build.0 = Debug|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Release|x64.ActiveCfg = Release|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Release|x64.Build.0 = Release|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Release|x86.ActiveCfg = Release|Any CPU
+		{F42D203F-6BFE-41D7-BA68-5917E1C13951}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
