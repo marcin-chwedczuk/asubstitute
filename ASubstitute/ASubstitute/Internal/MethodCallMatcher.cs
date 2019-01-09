@@ -1,29 +1,31 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace ASubstitute.Internal {
     public class MethodCallMatcher {
         private readonly string _methodName;
         private readonly int _parametersCount;
 
-        private readonly IList<IArgumentMatcher> _argumentMatchers;
+        private readonly IImmutableList<IArgumentMatcher> _argumentMatchers;
 
         public MethodCallMatcher(
             string methodName, 
             int parametersCount, 
-            IList<IArgumentMatcher> argumentMatchers)
+            IImmutableList<IArgumentMatcher> argumentMatchers)
         {
             _methodName = methodName;
             _parametersCount = parametersCount;
-            _argumentMatchers = argumentMatchers;   
+            _argumentMatchers = argumentMatchers;
 
             if (_parametersCount != _argumentMatchers.Count)
                 throw new ArgumentException(
                     $"Expecting to get {_parametersCount} argument matchers, instead got {_argumentMatchers.Count}.");
         }
 
-        public bool MatchesCall(MethodInfo method, IList<TypedArgument> arguments) {
+        public bool MatchesCall(ProxyMethod method, IImmutableList<TypedArgument> arguments) {
             if (string.CompareOrdinal(method.Name, _methodName) != 0) 
                 return false;
 
@@ -52,9 +54,8 @@ namespace ASubstitute.Internal {
 
             return false;
         }
-
         
-        public bool IsCompatible(MethodInfo method, IList<IArgumentMatcher> matchers) {
+        public bool IsCompatible(ProxyMethod method, IList<IArgumentMatcher> matchers) {
             if (string.CompareOrdinal(method.Name, _methodName) != 0) 
                 return false;
 
@@ -68,6 +69,23 @@ namespace ASubstitute.Internal {
 
             return true;
         }
-    }
 
+        public bool IsCompatible(MethodCallMatcher other) {
+            if (string.CompareOrdinal(this._methodName, other._methodName) != 0) 
+                return false;
+
+            if (this._parametersCount != other._parametersCount)
+                return false;
+
+            for (int i = 0; i < this._argumentMatchers.Count; i++) {
+                var thisMatcher = this._argumentMatchers[i];
+                var otherMatcher = other._argumentMatchers[i];
+
+                if (thisMatcher.Equals(otherMatcher))
+                    return false;
+            }
+
+            return true;
+        }
+    }
 }

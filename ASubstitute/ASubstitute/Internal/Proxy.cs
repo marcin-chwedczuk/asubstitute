@@ -1,24 +1,30 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Immutable;
 using System.Collections.Generic;
 
 namespace ASubstitute.Internal {
     public class Proxy : DispatchProxy {
-        public IList<SpecificMethodCall> MethodCalls { get; } = new List<SpecificMethodCall>();
+        public IList<MethodSetup> MethodSetups { get; } = new List<MethodSetup>();
+
+        public Type ProxiedType { get; private set; }
+
+        internal void Init(Type proxiedType) {
+            ProxiedType = proxiedType;
+        }
 
         protected override object Invoke(MethodInfo targetMethod, object[] args) {
-            var typedArgs = targetMethod.GetParameters()
-                .Select((param, index) => new TypedArgument(param.ParameterType, args[index]))
-                .ToArray();
-                
-            ThreadLocalContext.RecordInvocation(this, targetMethod, typedArgs);
 
-            var methodCall = FindFirstMatching(targetMethod, typedArgs);
-            if (methodCall != null) {
-                var result = methodCall.InvokeBehaviour(typedArgs);
+            var methodCall = ProxyMethodCall.From(this, targetMethod, args);
 
-                if (!object.ReferenceEquals(result, SpecificMethodCall.NO_RESULT)) {
+            ThreadLocalContext.SetCurrentMethodCall(methodCall);
+
+            var recordedCall = FindFirstMatching(methodCall.CalledMethod, methodCall.PassedArguments);
+            if (recordedCall != null) {
+                var result = recordedCall.InvokeBehaviour(methodCall.PassedArguments);
+
+                if (!object.ReferenceEquals(result, MethodSetup.NO_RESULT)) {
                     return result;
                 }
             }
@@ -26,14 +32,14 @@ namespace ASubstitute.Internal {
             return ReflectionUtils.CreateDefaultValue(targetMethod.ReturnType);
         }
 
-        public SpecificMethodCall FindFirstMatching(MethodInfo method, IList<TypedArgument> typedArgs) {
-            return MethodCalls
+        public MethodSetup FindFirstMatching(ProxyMethod method, IImmutableList<TypedArgument> typedArgs) {
+            return MethodSetups
                 .FirstOrDefault(x => x.MatchesCall(method, typedArgs));
         }
 
-        public SpecificMethodCall FindCompatibleMethodCall(MethodInfo method, IList<IArgumentMatcher> matchers) {
-            return MethodCalls
-                .FirstOrDefault(x => x.IsCompatible(method, matchers));
+        public MethodSetup FindCompatibleMethodSetup(MethodCallMatcher matcher) {
+            return MethodSetups
+                .SingleOrDefault(x => x.IsCompatible(matcher));
         }
     }
 

@@ -4,7 +4,9 @@ using ASubstitute.Internal;
 namespace ASubstitute {
     public static class Substitute {
         public static T For<T>() {
-            return DispatchProxy.Create<T, Proxy>();
+            T proxy = DispatchProxy.Create<T, Proxy>();
+            (proxy as Proxy).Init(typeof(T));
+            return proxy;
         }
     }
 

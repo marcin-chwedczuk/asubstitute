@@ -1,16 +1,49 @@
 ﻿using System.Reflection;
 using System.Collections.Generic;
+using System;
+using System.Collections.Immutable;
 
 namespace ASubstitute.Internal {
-    public class Context {
-        public Proxy CurrentProxy { get; set; }
-        public MethodInfo SelectedMethod { get; set; }
+    class Context {
+        private ProxyMethodCall _currentMethodCall;
+        private MethodCallMatcherBuilder _methodCallMatcherBuilder;
+        private MethodCallMatcher _methodCallMatcher;
 
-        public List<IArgumentMatcher> ArgumentMatchers { get; } 
-            = new List<IArgumentMatcher>();
+        public Context() {
+            Clear();
+        }
 
-        public List<TypedArgument> MethodArguments { get; }
-            = new List<TypedArgument>();
+        public void Clear() {
+            _currentMethodCall = null;
+            _methodCallMatcherBuilder = MethodCallMatcherBuilder.Create();
+            _methodCallMatcher = null;
+        }
+
+        public void AddArgumentMatcher(IArgumentMatcher matcher) {
+            _methodCallMatcherBuilder.AddExplicitMatcher(matcher);
+        }
+
+        public void SetCurrentMethodCall(ProxyMethodCall methodCall) {
+            _currentMethodCall = methodCall;
+            _methodCallMatcher = _methodCallMatcherBuilder
+                .WithMethodCall(methodCall)
+                .Build();
+
+            _methodCallMatcherBuilder = MethodCallMatcherBuilder.Create();
+        }
+
+        public void RegisterBehaviour(IRecordedBehaviour behaviour) {
+            var proxy = _currentMethodCall.Proxy;
+
+            MethodSetup existing = 
+                proxy.FindCompatibleMethodSetup(_methodCallMatcher);
+
+            if (existing == null) {
+                existing = new MethodSetup(_methodCallMatcher);
+                proxy.MethodSetups.Add(existing);
+            }
+
+            existing.AddBehaviour(behaviour);
+        }
     }
-
 }

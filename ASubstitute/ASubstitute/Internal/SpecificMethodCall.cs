@@ -1,16 +1,17 @@
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace ASubstitute.Internal {
-    public class SpecificMethodCall {
+    public class MethodSetup {
         public static readonly object NO_RESULT = new object();
 
         public readonly MethodCallMatcher _methodCallMatcher;
         public readonly Queue<IRecordedBehaviour> _recordedBehaviours
             = new Queue<IRecordedBehaviour>();
 
-        public SpecificMethodCall(MethodCallMatcher methodCallMatcher) {
+        public MethodSetup(MethodCallMatcher methodCallMatcher) {
             _methodCallMatcher = methodCallMatcher;
         }
 
@@ -18,11 +19,11 @@ namespace ASubstitute.Internal {
             _recordedBehaviours.Enqueue(behaviour);
         }
 
-        public bool MatchesCall(MethodInfo method, IList<TypedArgument> arguments) {
+        public bool MatchesCall(ProxyMethod method, IImmutableList<TypedArgument> arguments) {
             return _methodCallMatcher.MatchesCall(method, arguments);
         }
 
-        public object InvokeBehaviour(IList<TypedArgument> arguments) {
+        public object InvokeBehaviour(IImmutableList<TypedArgument> arguments) {
             IRecordedBehaviour behaviour = _recordedBehaviours.Count > 1
                 ? _recordedBehaviours.Dequeue()
                 : _recordedBehaviours.Peek();
@@ -31,9 +32,12 @@ namespace ASubstitute.Internal {
                 arguments.Select(x => x.Value).ToArray());
         }
 
-        internal bool IsCompatible(MethodInfo method, IList<IArgumentMatcher> matchers) {
+        internal bool IsCompatible(ProxyMethod method, IList<IArgumentMatcher> matchers) {
             return _methodCallMatcher.IsCompatible(method, matchers);
         }
+
+        public bool IsCompatible(MethodCallMatcher matcher)
+            => _methodCallMatcher.Equals(matcher);
     }
 
 }
