@@ -112,6 +112,30 @@ namespace ASubstitute.Test {
                 .Returns(default(int));           
         }
 
+        [Fact]
+        public void Missing_argument_matchers_are_detected_in_setup_calls() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            // Act
+            var exception = Record.Exception(() =>
+            {
+                substitute.ConcatenateStrings(
+                        Arg.Is("foo"),
+                        null, // missing matcher
+                        Arg.Is("foo"))
+                    .Returns("bar");
+            });
+
+            // Assert
+            exception.Message.Should().Contain(
+                $"{nameof(ITestInterface)}.{nameof(ITestInterface.ConcatenateStrings)}");
+
+            exception.Message.Should().Contain("on position 2");
+
+            exception.Message.Should().Contain("Missing argument matcher");
+        }
+
 
         // TODO: Supports overloaded methods?
 

@@ -1,9 +1,16 @@
 ﻿namespace ASubstitute.Internal {
-    public class MissingArgumentMatcherPlaceholder : IArgumentMatcher {
+    class MissingArgumentMatcherPlaceholder : IArgumentMatcher {
         public string Message { get; }
 
-        public MissingArgumentMatcherPlaceholder(string message) {
-            this.Message = message;
+        public MissingArgumentMatcherPlaceholder(ProxyMethodCall methodCall, int argumentPosition) {
+            this.Message = CreateMessage(methodCall, argumentPosition);
         }
+
+        private static string CreateMessage(ProxyMethodCall methodCall, int argumentPosition)
+            =>  $"Invalid usage of argument matchers detected in call to " +
+                $"{methodCall.Proxy.ProxiedType.Name}.{methodCall.CalledMethod.Name} method. " +
+                $"Missing argument matcher for parameter on position {argumentPosition}. " +
+                $"Please remember that all default values (null, 0, false, default) " +
+                $"must be replaced by argument matchers in *setup* calls.";
     }
 }

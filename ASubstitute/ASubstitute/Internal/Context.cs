@@ -33,8 +33,11 @@ namespace ASubstitute.Internal {
         }
 
         public void RegisterBehaviour(IRecordedBehaviour behaviour) {
+            _methodCallMatcher.Verify();
+
             var proxy = _currentMethodCall.Proxy;
 
+            // TODO: FindOrCreate ?
             MethodSetup existing = 
                 proxy.FindCompatibleMethodSetup(_methodCallMatcher);
 

@@ -47,8 +47,8 @@ namespace ASubstitute.Internal {
 
             foreach(var (arg, index) in _methodCall.PassedArguments.ToValueIndexPairs()) {
                 IArgumentMatcher matcher = arg.HasDefaultValue
-                    ? explicitMatchers.DequeueOrElse(
-                            () => CreateMissingExplicitMatcherPlaceholder(_methodCall, index))
+                    ? explicitMatchers.DequeueOrElse(() => 
+                            new MissingArgumentMatcherPlaceholder(_methodCall, index))
                     : CreateMatcherFromArgumentValue(arg);
                 
                 allArgumentsMatchers.Add(matcher);
@@ -60,20 +60,6 @@ namespace ASubstitute.Internal {
         private static IArgumentMatcher CreateMatcherFromArgumentValue(TypedArgument arg) {
             var type = typeof(MatchEqualToArgumentMatcher<>).MakeGenericType(arg.Type);
             return (IArgumentMatcher) Activator.CreateInstance(type, arg.Value);
-        }
-
-        private IArgumentMatcher CreateMissingExplicitMatcherPlaceholder(
-            ProxyMethodCall methodCall, 
-            int argIndex) 
-        {
-            var message = 
-                $"Invalid usage of argument matchers detected in call to " +
-                $"{methodCall.Proxy.ProxiedType.Name}.{methodCall.CalledMethod.Name} method. " +
-                $"Missing argument matcher for parameter on position {argIndex}." +
-                $"Please remember that all default values (null, 0, false, default) " +
-                $"must be replaced by argument matchers in *setup* calls.";
-
-            return new MissingArgumentMatcherPlaceholder(message);
         }
 
         public static MethodCallMatcherBuilder Create()

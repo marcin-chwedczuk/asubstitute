@@ -47,6 +47,16 @@ namespace ASubstitute.Internal {
             return true;
         }
 
+        public void Verify() {
+            var missingMatcherPlaceholder = _argumentMatchers
+                .OfType<MissingArgumentMatcherPlaceholder>()
+                .FirstOrDefault();
+
+            if (missingMatcherPlaceholder != null) {
+                throw new SubstituteException(missingMatcherPlaceholder.Message);
+            }
+        }
+
         public static bool Matches<T>(T argumentValue, IArgumentMatcher matcher) {
             if (matcher is IArgumentMatcher<T> typedMatcher) {
                 return typedMatcher.Matches(argumentValue);
