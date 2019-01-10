@@ -158,7 +158,36 @@ namespace ASubstitute.Test {
                 .Should().Be(default(int));
         }
 
-        // TODO: Supports overloaded methods?
+        [Fact]
+        public void Overloads_of_overloaded_methods_can_be_setup_independently() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.OverloadedMethod(Arg.Any<int>())
+                .Returns(1);
+
+            substitute.OverloadedMethod(Arg.Any<int>(), Arg.Any<int>())
+                .Returns(2);
+
+            substitute.OverloadedMethod(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>())
+                .Returns(3);
+
+            substitute.OverloadedMethod(Arg.Any<string>())
+                .Returns(4);
+
+            // Assert
+            substitute.OverloadedMethod(1)
+                .Should().Be(1);
+
+            substitute.OverloadedMethod(1, 2)
+                .Should().Be(2);
+
+            substitute.OverloadedMethod(1, 2, 3)
+                .Should().Be(3);
+
+            substitute.OverloadedMethod("foo")
+                .Should().Be(4);
+        }
 
         // TODO: foo(1,2,3)return(7) + foo(arg.any, arg.any, 3)return(5)
 

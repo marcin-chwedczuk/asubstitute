@@ -17,5 +17,10 @@ namespace ASubstitute.Test.DummyTypes {
 
         int MixOfTypes(int n, string s, object o);
         object MixOfTypes(bool b, object o, List<string> list);
+
+        int OverloadedMethod(int a);
+        int OverloadedMethod(int a, int b);
+        int OverloadedMethod(int a, int b, int c);
+        int OverloadedMethod(string a);
     }
 }
