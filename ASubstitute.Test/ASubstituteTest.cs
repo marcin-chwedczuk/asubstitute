@@ -247,6 +247,48 @@ namespace ASubstitute.Test {
                 .Should().Be(3);
         }
 
+        [Fact]
+        public void Method_can_be_setup_to_throw_exceptions() {
+            // Arrange
+            var EXCEPTION_MESSAGE = "test-message";
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.ReturnsInt()
+                .Throws(new InvalidOperationException(EXCEPTION_MESSAGE));
+
+            // Act
+            var ex = Record.Exception(() => {
+                substitute.ReturnsInt();
+            });
+
+            // Assert
+            ex.Should().NotBeNull();
+            ex.Should().BeAssignableTo<InvalidOperationException>();
+
+            ex.Message.Should().Be(EXCEPTION_MESSAGE);
+        }
+
+        [Fact]
+        public void Method_behaviours_can_be_mixed() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.ReturnsInt()
+                .Returns(3)
+                .Throws(new InvalidOperationException())
+                .Returns(5);
+
+            // Assert
+            substitute.ReturnsInt()
+                .Should().Be(3);
+
+            ((Func<int>)substitute.ReturnsInt)
+                .Should().Throw<InvalidOperationException>();
+            
+            substitute.ReturnsInt()
+                .Should().Be(5);
+        }
+
         // TODO: foo(1,2,3)return(7) + foo(arg.any, arg.any, 3)return(5)
 
         [Fact]

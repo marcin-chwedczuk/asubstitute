@@ -16,7 +16,7 @@ namespace ASubstitute.Internal {
         public static void AddArgumentMatcher(IArgumentMatcher matcher)
             => _context.Value.AddArgumentMatcher(matcher);
 
-        internal static void RegisterBehaviour(IRecordedBehaviour behaviour) 
+        internal static void RegisterBehaviour(IMethodBehaviour behaviour) 
             => _context.Value.RegisterBehaviour(behaviour);
     }
 }

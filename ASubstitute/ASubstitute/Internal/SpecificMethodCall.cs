@@ -8,14 +8,14 @@ namespace ASubstitute.Internal {
         public static readonly object NO_RESULT = new object();
 
         public readonly MethodCallMatcher _methodCallMatcher;
-        public readonly Queue<IRecordedBehaviour> _recordedBehaviours
-            = new Queue<IRecordedBehaviour>();
+        public readonly Queue<IMethodBehaviour> _recordedBehaviours
+            = new Queue<IMethodBehaviour>();
 
         public MethodSetup(MethodCallMatcher methodCallMatcher) {
             _methodCallMatcher = methodCallMatcher;
         }
 
-        public void AddBehaviour(IRecordedBehaviour behaviour) {
+        public void AddBehaviour(IMethodBehaviour behaviour) {
             _recordedBehaviours.Enqueue(behaviour);
         }
 
@@ -24,7 +24,7 @@ namespace ASubstitute.Internal {
         }
 
         public object InvokeBehaviour(IImmutableList<TypedArgument> arguments) {
-            IRecordedBehaviour behaviour = _recordedBehaviours.Count > 1
+            IMethodBehaviour behaviour = _recordedBehaviours.Count > 1
                 ? _recordedBehaviours.Dequeue()
                 : _recordedBehaviours.Peek();
 

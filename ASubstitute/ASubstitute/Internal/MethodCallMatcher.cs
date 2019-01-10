@@ -48,6 +48,7 @@ namespace ASubstitute.Internal {
         }
 
         public void Verify() {
+            // TODO: More OO way like matchers foreach [ it | it.VerifyValid() ]
             var missingMatcherPlaceholder = _argumentMatchers
                 .OfType<MissingArgumentMatcherPlaceholder>()
                 .FirstOrDefault();

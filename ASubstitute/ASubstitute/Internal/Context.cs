@@ -32,7 +32,7 @@ namespace ASubstitute.Internal {
             _methodCallMatcherBuilder = MethodCallMatcherBuilder.Create();
         }
 
-        public void RegisterBehaviour(IRecordedBehaviour behaviour) {
+        public void RegisterBehaviour(IMethodBehaviour behaviour) {
             _methodCallMatcher.Verify();
 
             var proxy = _currentMethodCall.Proxy;

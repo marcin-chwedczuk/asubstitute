@@ -1,8 +1,8 @@
-namespace ASubstitute.Internal {
-    public class ReturnValueRecordedBehaviour : IRecordedBehaviour {
+﻿namespace ASubstitute.Internal {
+    public class ReturnValueMethodBehaviour : IMethodBehaviour {
         private readonly object _value;
 
-        public ReturnValueRecordedBehaviour(object value) {
+        public ReturnValueMethodBehaviour(object value) {
             this._value = value;
         }
 

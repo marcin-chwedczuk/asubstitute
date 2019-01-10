@@ -24,6 +24,7 @@ namespace ASubstitute.Internal {
             if (recordedCall != null) {
                 var result = recordedCall.InvokeBehaviour(methodCall.PassedArguments);
 
+                // TODO: is this if needed?
                 if (!object.ReferenceEquals(result, MethodSetup.NO_RESULT)) {
                     return result;
                 }
