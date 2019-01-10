@@ -22,5 +22,8 @@ namespace ASubstitute.Test.DummyTypes {
         int OverloadedMethod(int a, int b);
         int OverloadedMethod(int a, int b, int c);
         int OverloadedMethod(string a);
+
+        int PropertyA { get; }
+        string PropertyB { get; set; }
     }
 }

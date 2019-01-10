@@ -189,6 +189,35 @@ namespace ASubstitute.Test {
                 .Should().Be(4);
         }
 
+        [Fact]
+        public void Non_setup_properties_return_default_values() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            // Assert
+            substitute.PropertyA
+                .Should().Be(default(int));
+
+            substitute.PropertyB
+                .Should().Be(default(string));
+        }
+
+        [Fact]
+        public void Property_that_is_setup_returns_values_set_during_setup() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.PropertyA.Returns(101);
+            substitute.PropertyB.Returns("foo");
+
+            // Act
+            substitute.PropertyA
+                .Should().Be(101);
+
+            substitute.PropertyB
+                .Should().Be("foo");
+        }
+
         // TODO: foo(1,2,3)return(7) + foo(arg.any, arg.any, 3)return(5)
 
         [Fact]
