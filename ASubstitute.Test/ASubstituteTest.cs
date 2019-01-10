@@ -107,9 +107,6 @@ namespace ASubstitute.Test {
             // Assert
             substitute.AddTwoIntegers(22, 33)
                 .Returns(55);
-
-            substitute.AddTwoIntegers(33, 22)
-                .Returns(default(int));           
         }
 
         [Fact]
@@ -136,6 +133,30 @@ namespace ASubstitute.Test {
             exception.Message.Should().Contain("Missing argument matcher");
         }
 
+        [Fact]
+        public void Setup_methods_does_not_change_behaviour_of_non_setup_methods() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            // Setup using matchers
+            substitute.AddTwoIntegers(Arg.Is(7), Arg.Is(15))
+                .Returns(101);
+
+            // Setup using non-default values
+            substitute.AddTwoIntegers(8, 10)
+                .Returns(102);
+
+            // Mixed setup with 'any' matcher
+            substitute.AddTwoIntegers(9, Arg.Any<int>())
+                .Returns(103);
+
+            // Assert
+            substitute.AddTwoIntegers(10, 5)
+                .Should().Be(default(int));
+
+            substitute.AddTwoIntegers(8, 17)
+                .Should().Be(default(int));
+        }
 
         // TODO: Supports overloaded methods?
 
