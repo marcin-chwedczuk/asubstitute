@@ -138,6 +138,7 @@ namespace ASubstitute.Test {
             // Arrange
             var substitute = Substitute.For<ITestInterface>();
 
+            // Act
             // Setup using matchers
             substitute.AddTwoIntegers(Arg.Is(7), Arg.Is(15))
                 .Returns(101);
@@ -163,6 +164,7 @@ namespace ASubstitute.Test {
             // Arrange
             var substitute = Substitute.For<ITestInterface>();
 
+            // Act
             substitute.OverloadedMethod(Arg.Any<int>())
                 .Returns(1);
 
@@ -207,15 +209,42 @@ namespace ASubstitute.Test {
             // Arrange
             var substitute = Substitute.For<ITestInterface>();
 
+            // Act
             substitute.PropertyA.Returns(101);
             substitute.PropertyB.Returns("foo");
 
-            // Act
+            // Assert 
             substitute.PropertyA
                 .Should().Be(101);
 
             substitute.PropertyB
                 .Should().Be("foo");
+        }
+
+        [Fact]
+        public void Many_behaviours_can_be_assigned_to_a_single_method() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            // Act
+            substitute.ReturnsInt()
+                .Returns(1)
+                .Returns(2)
+                .Returns(3);
+
+            // Assert
+            substitute.ReturnsInt()
+                .Should().Be(1);
+
+            substitute.ReturnsInt()
+                .Should().Be(2);
+
+            substitute.ReturnsInt()
+                .Should().Be(3);
+
+            // It should stay 3 forever
+            substitute.ReturnsInt()
+                .Should().Be(3);
         }
 
         // TODO: foo(1,2,3)return(7) + foo(arg.any, arg.any, 3)return(5)
