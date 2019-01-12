@@ -1,9 +1,9 @@
 ﻿namespace ASubstitute.Internal {
     class MissingArgumentMatcherPlaceholder : IArgumentMatcher {
-        public string Message { get; }
+        public string InvalidMatcherUsageMessage { get; }
 
         public MissingArgumentMatcherPlaceholder(ProxyMethodCall methodCall, int argumentPosition) {
-            this.Message = CreateMessage(methodCall, argumentPosition);
+            this.InvalidMatcherUsageMessage = CreateMessage(methodCall, argumentPosition);
         }
 
         private static string CreateMessage(ProxyMethodCall methodCall, int argumentPosition)

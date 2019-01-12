@@ -3,6 +3,7 @@ using ASubstitute.Internal;
 
 namespace ASubstitute {
     public static class Arg {
+        // TODO: Better names like AnyAM, EqualToAM and PredicateAM
         public static T Any<T>() {
             ThreadLocalContext.AddArgumentMatcher(
                 new MatchAnyArgumentMatcher<T>());

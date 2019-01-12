@@ -32,10 +32,6 @@ namespace ASubstitute.Internal {
                 arguments.Select(x => x.Value).ToArray());
         }
 
-        internal bool IsCompatible(ProxyMethod method, IList<IArgumentMatcher> matchers) {
-            return _methodCallMatcher.IsCompatible(method, matchers);
-        }
-
         public bool IsCompatible(MethodCallMatcher matcher)
             => _methodCallMatcher.Equals(matcher);
     }

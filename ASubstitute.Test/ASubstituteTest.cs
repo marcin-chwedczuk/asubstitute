@@ -445,6 +445,25 @@ namespace ASubstitute.Test {
         }
 
         [Fact]
+        public void Setup_works_with_methods_that_have_parameters_default_values() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.MethodWithDefaultParameter()
+                .Returns(1);
+
+            substitute.MethodWithDefaultParameter(100)
+                .Returns(2);
+
+            // Assert
+            substitute.MethodWithDefaultParameter()
+                .Should().Be(1);
+
+            substitute.MethodWithDefaultParameter(100)
+                .Should().Be(2);
+        }
+
+        [Fact]
         public void Test1()
         {
             var calculator = Substitute.For<ITestInterface>();

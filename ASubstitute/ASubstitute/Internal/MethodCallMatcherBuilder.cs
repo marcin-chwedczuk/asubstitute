@@ -17,7 +17,6 @@ namespace ASubstitute.Internal {
 
             return new MethodCallMatcher(
                 _methodCall.CalledMethod.Name,
-                _methodCall.CalledMethod.GetParametersCount(),
                 CreateAllArgumentsMatchers());
         }
 

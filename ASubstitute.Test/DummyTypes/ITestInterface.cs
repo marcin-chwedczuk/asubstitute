@@ -25,5 +25,7 @@ namespace ASubstitute.Test.DummyTypes {
 
         int PropertyA { get; }
         string PropertyB { get; set; }
+
+        int MethodWithDefaultParameter(int p = 1);
     }
 }

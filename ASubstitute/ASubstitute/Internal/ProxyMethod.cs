@@ -10,8 +10,5 @@ namespace ASubstitute.Internal {
         public ProxyMethod(MethodInfo method) {
             _method = method;
         }
-
-        public int GetParametersCount()
-            => _method.GetParameters().Length;
     }
 }

@@ -38,7 +38,7 @@ namespace ASubstitute.Internal {
         }
 
         public void RegisterBehaviour(IMethodBehaviour behaviour) {
-            _methodCallMatcher.Verify();
+            _methodCallMatcher.VerifyIsComplete();
 
             var proxy = _currentMethodCall.Proxy;
 
