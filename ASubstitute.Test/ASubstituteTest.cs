@@ -415,7 +415,34 @@ namespace ASubstitute.Test {
                 .AddTwoIntegers(10, Arg.Any<int>());
         }
 
-        // TODO: Add support for Arg.Is + Predicate 
+        [Fact]
+        public void A_predicate_can_be_used_with_ArgIs_matcher() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.AddTwoIntegers(
+                    Arg.Is<int>(n => n % 2 == 0), 
+                    Arg.Is<int>(n => n > 10))
+                .Returns(1)
+                .Returns(2)
+                .Returns(3);
+
+            // Assert
+            substitute.AddTwoIntegers(8, 11)
+                .Should().Be(1);
+
+            substitute.AddTwoIntegers(10, 101010)
+                .Should().Be(2);
+
+            substitute.AddTwoIntegers(12, 32)
+                .Should().Be(3);
+
+            substitute.AddTwoIntegers(11, 32)
+                .Should().Be(default(int));
+
+            substitute.AddTwoIntegers(8, 1)
+                .Should().Be(default(int));
+        }
 
         [Fact]
         public void Test1()

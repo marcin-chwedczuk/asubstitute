@@ -1,3 +1,4 @@
+using System;
 using ASubstitute.Internal;
 
 namespace ASubstitute {
@@ -15,6 +16,12 @@ namespace ASubstitute {
 
             return default(T);
         }
-    }
 
+        public static T Is<T>(Predicate<T> predicate) {
+            ThreadLocalContext.AddArgumentMatcher(
+                new FulfillsPredicateArgumentMatcher<T>(predicate));
+
+            return default(T);
+        }
+    }
 }
