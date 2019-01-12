@@ -1,7 +1,10 @@
 using System;
 using System.Linq;
+using ASubstitute.Api;
+using ASubstitute.Api.Assertions;
+using ASubstitute.Internal;
 
-namespace ASubstitute.Internal {
+namespace ASubstitute.Buildin.Assertions {
     class MethodCalledNTimesAssertion : IMethodCallHistoryAssertion {
         private readonly int _times;
 
@@ -11,7 +14,7 @@ namespace ASubstitute.Internal {
             _times = times;
         }
 
-        public void Check(MethodCallMatcher assertionCall, MethodCallHistory methodCallHistory) {
+        public void Check(IMethodCallMatcher assertionCall, IMethodCallHistory methodCallHistory) {
             int matchingCallsCount = methodCallHistory.GetCalledMethods() 
                 .Where(call => assertionCall.MatchesCall(call.CalledMethod, call.PassedArguments))
                 .Count();

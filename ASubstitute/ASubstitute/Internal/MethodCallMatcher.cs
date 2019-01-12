@@ -4,9 +4,10 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using ASubstitute.Api;
+using ASubstitute.Api.Assertions;
 
 namespace ASubstitute.Internal {
-    public class MethodCallMatcher {
+    public class MethodCallMatcher : IMethodCallMatcher {
         private readonly string _methodName;
 
         private readonly IImmutableList<IArgumentMatcher> _argumentMatchers;
@@ -19,7 +20,7 @@ namespace ASubstitute.Internal {
             _argumentMatchers = argumentMatchers;
         }
 
-        public bool MatchesCall(ProxyMethod method, IImmutableList<TypedArgument> arguments) {
+        public bool MatchesCall(IMethod method, IImmutableList<ITypedArgument> arguments) {
             if (!string.Equals(_methodName, method.Name, StringComparison.Ordinal))
                 return false;
 
@@ -28,7 +29,7 @@ namespace ASubstitute.Internal {
 
             for (int i = 0; i < _argumentMatchers.Count; i++) {
                 IArgumentMatcher matcher = _argumentMatchers[i];
-                TypedArgument argument = arguments[i];
+                ITypedArgument argument = arguments[i];
 
                 if (!Matches(argument, matcher)) {
                     return false;
@@ -38,7 +39,7 @@ namespace ASubstitute.Internal {
             return true;
         }
 
-        private static bool Matches(TypedArgument argument, IArgumentMatcher matcher) {
+        private static bool Matches(ITypedArgument argument, IArgumentMatcher matcher) {
             // Calls Matches<arg.Type>(arg.Value, matcher)
             var genericMethod = typeof(MethodCallMatcher)
                 .GetMethod(nameof(MatchesImpl), BindingFlags.NonPublic | BindingFlags.Static);
@@ -67,5 +68,5 @@ namespace ASubstitute.Internal {
                 throw new SubstituteException(missingMatcherPlaceholder.InvalidMatcherUsageMessage);
             }
         }
-   }
+    }
 }

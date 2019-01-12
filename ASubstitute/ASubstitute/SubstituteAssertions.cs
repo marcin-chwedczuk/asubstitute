@@ -1,9 +1,10 @@
-﻿using ASubstitute.Internal;
+﻿using ASubstitute.Api;
+using ASubstitute.Buildin.Assertions;
 
 namespace ASubstitute {
     public static class SubstituteAssertions {
         public static T Received<T>(this T mock, int times) {
-            ThreadLocalContext.RegisterAssertion(
+            SubstituteContext.RegisterAssertion(
                 new MethodCalledNTimesAssertion(times));
 
             return mock;

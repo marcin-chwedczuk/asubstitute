@@ -9,5 +9,4 @@ namespace ASubstitute {
             return proxy;
         }
     }
-
 }

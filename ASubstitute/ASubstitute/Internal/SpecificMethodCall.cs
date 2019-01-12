@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using ASubstitute.Api;
+using ASubstitute.Api.Assertions;
 
 namespace ASubstitute.Internal {
     public class MethodSetup {
@@ -21,7 +22,10 @@ namespace ASubstitute.Internal {
         }
 
         public bool MatchesCall(ProxyMethod method, IImmutableList<TypedArgument> arguments) {
-            return _methodCallMatcher.MatchesCall(method, arguments);
+            return _methodCallMatcher.MatchesCall(
+                method, 
+                // TOOD: Remove 'proteza'...
+                arguments.Cast<ITypedArgument>().ToImmutableList());
         }
 
         public object InvokeBehaviour(IImmutableList<TypedArgument> arguments) {

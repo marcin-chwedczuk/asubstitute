@@ -1,9 +1,11 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using ASubstitute.Api.Assertions;
 
 namespace ASubstitute.Internal {
-    class MethodCallHistory {
-        private readonly List<ProxyMethodCall> _receivedCalls = new List<ProxyMethodCall>();
+    class MethodCallHistory : IMethodCallHistory {
+        private readonly List<IMethodCall> _receivedCalls = new List<IMethodCall>();
 
         public void AddCall(ProxyMethodCall methodCall)
             => _receivedCalls.Add(methodCall);
@@ -11,7 +13,7 @@ namespace ASubstitute.Internal {
         public void RemoveCall(ProxyMethodCall methodCall)
             => _receivedCalls.Remove(methodCall);
 
-        public IImmutableList<ProxyMethodCall> GetCalledMethods()
+        public IImmutableList<IMethodCall> GetCalledMethods()
             => _receivedCalls.ToImmutableList();
     }
 }

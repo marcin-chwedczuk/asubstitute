@@ -3,14 +3,21 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
+using ASubstitute.Api.Assertions;
 
 namespace ASubstitute.Internal {
-    class ProxyMethodCall {
+    class ProxyMethodCall : IMethodCall {
         public Proxy Proxy { get; }
 
         public ProxyMethod CalledMethod { get; }
 
         public IImmutableList<TypedArgument> PassedArguments { get; }
+
+        IMethod IMethodCall.CalledMethod => CalledMethod;
+
+        IImmutableList<ITypedArgument> IMethodCall.PassedArguments => PassedArguments
+            .Cast<ITypedArgument>()
+            .ToImmutableList();
 
         private ProxyMethodCall(
                 Proxy proxy, 

@@ -1,7 +1,8 @@
 using System;
+using ASubstitute.Api.Assertions;
 
 namespace ASubstitute.Internal {
-    public class TypedArgument {
+    public class TypedArgument : ITypedArgument {
         public Type Type { get; }
         public object Value { get; }
 

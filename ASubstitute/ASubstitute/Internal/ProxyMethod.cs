@@ -1,7 +1,8 @@
 using System.Reflection;
+using ASubstitute.Api.Assertions;
 
 namespace ASubstitute.Internal {
-    public class ProxyMethod {
+    public class ProxyMethod : IMethod {
         private readonly MethodInfo _method;
 
         public string Name 
