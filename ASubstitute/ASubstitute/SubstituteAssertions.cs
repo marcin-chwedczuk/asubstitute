@@ -1,9 +1,11 @@
-using ASubstitute.Internal;
+﻿using ASubstitute.Internal;
 
 namespace ASubstitute {
-    public static class Verifications {
+    public static class SubstituteAssertions {
         public static T Received<T>(this T mock, int times) {
-            (mock as Proxy).VerifyNextCallWasReceived(times);
+            ThreadLocalContext.RegisterAssertion(
+                new MethodCalledNTimesAssertion(times));
+
             return mock;
         }
 

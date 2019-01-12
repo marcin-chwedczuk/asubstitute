@@ -16,7 +16,13 @@ namespace ASubstitute.Internal {
         public static void AddArgumentMatcher(IArgumentMatcher matcher)
             => _context.Value.AddArgumentMatcher(matcher);
 
-        internal static void RegisterBehaviour(IMethodBehaviour behaviour) 
+        public static void RegisterBehaviour(IMethodBehaviour behaviour) 
             => _context.Value.RegisterBehaviour(behaviour);
+
+        internal static void RegisterAssertion(IMethodCallHistoryAssertion assertion)
+            => _context.Value.RegisterAssertion(assertion);
+
+        internal static IMethodCallHistoryAssertion ConsumeAssertion()
+            => _context.Value.ConsumeAssertion();
     }
 }

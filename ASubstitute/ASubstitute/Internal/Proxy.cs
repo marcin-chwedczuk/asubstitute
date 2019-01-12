@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Collections.Generic;
 
 namespace ASubstitute.Internal {
+    // Must be public due to DispatchProxy requirements.
     public class Proxy : DispatchProxy {
         private readonly MethodCallHistory _methodCallHistory = new MethodCallHistory();
 
@@ -13,16 +14,8 @@ namespace ASubstitute.Internal {
 
         public Type ProxiedType { get; private set; }
         
-        private CallMode _callMode = CallMode.SetupReplay;
-        private int _times = 0;
-
         internal void Init(Type proxiedType) {
             ProxiedType = proxiedType;
-        }
-
-        public void VerifyNextCallWasReceived(int times) {
-            _callMode = CallMode.Verify;
-            _times = times;
         }
 
         protected override object Invoke(MethodInfo targetMethod, object[] args) {
@@ -30,8 +23,12 @@ namespace ASubstitute.Internal {
             
             // TODO: CQS broken?
             var methodCallMatcher = ThreadLocalContext.SetCurrentMethodCall(methodCall);
+            var activeAssertion = ThreadLocalContext.ConsumeAssertion();
 
-            if (_callMode == CallMode.SetupReplay) {
+            if (activeAssertion != null) {
+                activeAssertion.Check(methodCallMatcher, _methodCallHistory);
+            }
+            else {
                 _methodCallHistory.AddCall(methodCall);
 
                 var recordedCall = FindFirstMatching(methodCall.CalledMethod, methodCall.PassedArguments);
@@ -43,17 +40,6 @@ namespace ASubstitute.Internal {
                         return result;
                     }
                 }
-            }
-            else if(_callMode == CallMode.Verify) {
-                int matchingCallsCount = _methodCallHistory.GetCalledMethods() 
-                    .Where(call => methodCallMatcher.MatchesCall(call.CalledMethod, call.PassedArguments))
-                    .Count();
-
-                if (matchingCallsCount != _times)
-                    throw new SubstituteException($"Expected: {_times} but got: {matchingCallsCount}");
-            }
-            else {
-                throw new NotImplementedException();
             }
 
             return ReflectionUtils.CreateDefaultValue(targetMethod.ReturnType);
@@ -72,9 +58,5 @@ namespace ASubstitute.Internal {
             return MethodSetups
                 .SingleOrDefault(x => x.IsCompatible(matcher));
         }
-    }
-    public enum CallMode {
-        SetupReplay,
-        Verify
     }
 }

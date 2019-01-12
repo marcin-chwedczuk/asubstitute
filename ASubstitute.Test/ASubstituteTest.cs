@@ -386,7 +386,8 @@ namespace ASubstitute.Test {
                 .ReturnsReferenceType();
 
             var ex = Record.Exception(() => {
-                substitute.ReturnsNothing();
+                substitute.DidNotReceive()
+                    .ReturnsNothing();
             });
 
             ex.Should().NotBeNull();

@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 
 namespace ASubstitute.Internal {
     class Context {
         private ProxyMethodCall _currentMethodCall;
         private MethodCallMatcherBuilder _methodCallMatcherBuilder;
         private MethodCallMatcher _methodCallMatcher;
+
+        private IMethodCallHistoryAssertion _activeAssertion;
 
         public Context() {
             Clear();
@@ -17,6 +20,7 @@ namespace ASubstitute.Internal {
             _currentMethodCall = null;
             _methodCallMatcherBuilder = MethodCallMatcherBuilder.Create();
             _methodCallMatcher = null;
+            _activeAssertion = null;
         }
 
         public void AddArgumentMatcher(IArgumentMatcher matcher) {
@@ -49,6 +53,17 @@ namespace ASubstitute.Internal {
 
             existing.AddBehaviour(behaviour);
             proxy.MarkMethodCallAsSetup(_currentMethodCall);
+        }
+
+        public void RegisterAssertion(IMethodCallHistoryAssertion assertion) {
+            Debug.Assert(_activeAssertion == null);
+            _activeAssertion = assertion;
+        }
+
+        public IMethodCallHistoryAssertion ConsumeAssertion() {
+            var tmp = _activeAssertion;
+            _activeAssertion = null;
+            return tmp;
         }
     }
 }
