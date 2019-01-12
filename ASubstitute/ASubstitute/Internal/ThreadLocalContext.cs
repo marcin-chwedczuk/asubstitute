@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Threading;
 using System.Collections.Generic;
+using ASubstitute.Api;
 
 namespace ASubstitute.Internal {
     static class ThreadLocalContext {

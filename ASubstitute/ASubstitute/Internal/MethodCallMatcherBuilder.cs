@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using ASubstitute.Api;
+using ASubstitute.Buildin.ArgumentMatchers;
 
 namespace ASubstitute.Internal {
     class MethodCallMatcherBuilder {
@@ -57,7 +59,7 @@ namespace ASubstitute.Internal {
         }
 
         private static IArgumentMatcher CreateMatcherFromArgumentValue(TypedArgument arg) {
-            var type = typeof(MatchEqualToArgumentMatcher<>).MakeGenericType(arg.Type);
+            var type = typeof(EqualToArgumentMatcher<>).MakeGenericType(arg.Type);
             return (IArgumentMatcher) Activator.CreateInstance(type, arg.Value);
         }
 

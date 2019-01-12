@@ -1,4 +1,6 @@
-﻿namespace ASubstitute.Internal {
+﻿using ASubstitute.Api;
+
+namespace ASubstitute.Internal {
     class MissingArgumentMatcherPlaceholder : IArgumentMatcher {
         public string InvalidMatcherUsageMessage { get; }
 

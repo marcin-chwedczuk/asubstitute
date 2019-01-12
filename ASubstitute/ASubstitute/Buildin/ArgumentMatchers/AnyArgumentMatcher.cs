@@ -1,11 +1,13 @@
-namespace ASubstitute.Internal {
-    public class MatchAnyArgumentMatcher<T> : IArgumentMatcher<T> {
+﻿using ASubstitute.Api;
+
+namespace ASubstitute.Buildin.ArgumentMatchers {
+    public class AnyArgumentMatcher<T> : IArgumentMatcher<T> {
         public bool Matches(T argumentValue) {
             return true;
         }
 
         public override bool Equals(object obj) {
-            return (obj is MatchAnyArgumentMatcher<T>);
+            return (obj is AnyArgumentMatcher<T>);
         }
 
         public override int GetHashCode()
@@ -13,5 +15,4 @@ namespace ASubstitute.Internal {
             // other, so they must share the same hashcode value.
             => 7717;
     }
-
 }

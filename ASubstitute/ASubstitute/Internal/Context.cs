@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using ASubstitute.Api;
 
 namespace ASubstitute.Internal {
     class Context {

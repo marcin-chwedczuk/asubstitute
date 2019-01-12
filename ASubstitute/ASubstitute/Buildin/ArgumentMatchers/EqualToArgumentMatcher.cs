@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using ASubstitute.Api;
 
-namespace ASubstitute.Internal {
-    public class MatchEqualToArgumentMatcher<T> : IArgumentMatcher<T> {
+namespace ASubstitute.Buildin.ArgumentMatchers {
+    public class EqualToArgumentMatcher<T> : IArgumentMatcher<T> {
         private readonly T _value;
 
-        public MatchEqualToArgumentMatcher(T value) {
+        public EqualToArgumentMatcher(T value) {
             _value = value;
         }
 
@@ -14,7 +15,7 @@ namespace ASubstitute.Internal {
         
         public override bool Equals(object obj) {
             return 
-                (obj is MatchEqualToArgumentMatcher<T> other) && 
+                (obj is EqualToArgumentMatcher<T> other) && 
                 AreEqual(this._value, other._value);
         }
 

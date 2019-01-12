@@ -2,6 +2,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using ASubstitute.Api;
 
 namespace ASubstitute.Internal {
     public class MethodSetup {

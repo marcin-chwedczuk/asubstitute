@@ -1,10 +1,11 @@
-using System;
+﻿using System;
+using ASubstitute.Api;
 
-namespace ASubstitute.Internal {
-    public class FulfillsPredicateArgumentMatcher<T> : IArgumentMatcher<T> {
+namespace ASubstitute.Buildin.ArgumentMatchers {
+    public class PredicateArgumentMatcher<T> : IArgumentMatcher<T> {
         private readonly Predicate<T> predicate;
 
-        public FulfillsPredicateArgumentMatcher(Predicate<T> predicate) {
+        public PredicateArgumentMatcher(Predicate<T> predicate) {
             this.predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
         }
 
@@ -14,7 +15,7 @@ namespace ASubstitute.Internal {
         
         public override bool Equals(object obj) {
             return 
-                (obj is FulfillsPredicateArgumentMatcher<T> other) && 
+                (obj is PredicateArgumentMatcher<T> other) && 
                 object.Equals(this.predicate, other.predicate);
         }
 
