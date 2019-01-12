@@ -23,13 +23,14 @@ namespace ASubstitute.Internal {
             _methodCallMatcherBuilder.AddExplicitMatcher(matcher);
         }
 
-        public void SetCurrentMethodCall(ProxyMethodCall methodCall) {
+        public MethodCallMatcher SetCurrentMethodCall(ProxyMethodCall methodCall) {
             _currentMethodCall = methodCall;
             _methodCallMatcher = _methodCallMatcherBuilder
                 .WithMethodCall(methodCall)
                 .Build();
 
             _methodCallMatcherBuilder = MethodCallMatcherBuilder.Create();
+            return _methodCallMatcher;
         }
 
         public void RegisterBehaviour(IMethodBehaviour behaviour) {
@@ -47,6 +48,7 @@ namespace ASubstitute.Internal {
             }
 
             existing.AddBehaviour(behaviour);
+            proxy.MarkMethodCallAsSetup(_currentMethodCall);
         }
     }
 }

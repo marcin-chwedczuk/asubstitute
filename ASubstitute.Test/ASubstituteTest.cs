@@ -289,7 +289,132 @@ namespace ASubstitute.Test {
                 .Should().Be(5);
         }
 
-        // TODO: foo(1,2,3)return(7) + foo(arg.any, arg.any, 3)return(5)
+        [Fact]
+        public void Any_matcher_does_not_collide_with_Is_matcher() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.AddTwoIntegers(Arg.Is(1), Arg.Is(2))
+                .Returns(1);
+
+            substitute.AddTwoIntegers(Arg.Any<int>(), Arg.Is(3))
+                .Returns(2);
+
+            // Assert
+            substitute.AddTwoIntegers(1, 2)
+                .Returns(1);
+
+            substitute.AddTwoIntegers(1, 3)
+                .Returns(2);
+
+            // non setup call
+            substitute.AddTwoIntegers(100, 100)
+                .Returns(default(int));
+
+            // Check nothing changed after first series of calls
+            substitute.AddTwoIntegers(1, 2)
+                .Returns(1);
+
+             substitute.AddTwoIntegers(1, 3)
+                .Returns(2);
+        }
+
+        [Fact]
+        public void Receive_can_be_used_to_check_if_a_method_was_called_specified_number_of_times() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.ReturnsNothing();
+
+            // Assert
+            substitute.Received(1)
+                .ReturnsNothing();
+
+            var ex = Record.Exception(() => {
+                substitute.Received(2)
+                    .ReturnsNothing();
+            });
+
+            ex.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Setup_calls_are_not_considered_real_method_calls_in_Receive() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            // setup methods calls
+            substitute.ReturnsInt()
+                .Returns(101);
+
+            substitute.AddTwoIntegers(1, 2)
+                .Returns(3);
+
+            substitute.AddTwoIntegers(2, 3)
+                .Returns(5);
+
+            // real methods calls
+            substitute.ReturnsInt();
+            substitute.ReturnsInt();
+            substitute.ReturnsInt();
+
+            substitute.AddTwoIntegers(2, 3);
+
+            // Assert
+            substitute.Received(3).ReturnsInt();
+
+            substitute.Received(1).AddTwoIntegers(2, 3);
+        }
+
+        [Fact]
+        public void DidNotReceive_can_be_used_to_check_that_a_method_was_not_called() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.ReturnsReferenceType()
+                .Returns(new List<string> { "foo" })
+                .Returns(new List<string> { "bar" });
+
+            // call a method without earlier setup
+            substitute.ReturnsNothing();
+
+            // Assert
+            substitute.DidNotReceive()
+                .ReturnsInt();
+
+            substitute.DidNotReceive()
+                .ReturnsReferenceType();
+
+            var ex = Record.Exception(() => {
+                substitute.ReturnsNothing();
+            });
+
+            ex.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Argument_matchers_can_be_used_with_Receive_to_check_received_calls() {
+            // Arrange
+            var substitute = Substitute.For<ITestInterface>();
+
+            substitute.AddTwoIntegers(1, 2);
+            substitute.AddTwoIntegers(1, 3);
+            substitute.AddTwoIntegers(1, 4);
+
+            substitute.AddTwoIntegers(10, 12345);
+
+            // Assert
+            substitute.Received(4)
+                .AddTwoIntegers(Arg.Any<int>(), Arg.Any<int>());
+
+            substitute.Received(3)
+                .AddTwoIntegers(1, Arg.Any<int>());
+
+            substitute.Received(1)
+                .AddTwoIntegers(10, Arg.Any<int>());
+        }
+
+        // TODO: Add support for Arg.Is + Predicate 
 
         [Fact]
         public void Test1()

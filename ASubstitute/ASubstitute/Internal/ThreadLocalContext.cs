@@ -10,7 +10,7 @@ namespace ASubstitute.Internal {
         public static void Clear() 
             => _context.Value.Clear();
         
-        public static void SetCurrentMethodCall(ProxyMethodCall methodCall) 
+        public static MethodCallMatcher SetCurrentMethodCall(ProxyMethodCall methodCall) 
             => _context.Value.SetCurrentMethodCall(methodCall);
 
         public static void AddArgumentMatcher(IArgumentMatcher matcher)
