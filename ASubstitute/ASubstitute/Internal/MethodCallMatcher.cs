@@ -5,30 +5,35 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using ASubstitute.Api;
 using ASubstitute.Api.BuildingBlocks;
+using System.Diagnostics;
 
 namespace ASubstitute.Internal {
     public class MethodCallMatcher : IMethodCallMatcher {
-        private readonly string _methodName;
+        public IMethod Method { get; }
 
-        private readonly IImmutableList<IArgumentMatcher> _argumentMatchers;
+        public IImmutableList<IArgumentMatcher> ArgumentMatchers { get; }
 
         public MethodCallMatcher(
-            string methodName, 
+            IMethod method, 
             IImmutableList<IArgumentMatcher> argumentMatchers)
         {
-            _methodName = methodName;
-            _argumentMatchers = argumentMatchers;
+            if (method.ParameterTypes.Count != argumentMatchers.Count)
+                throw new ArgumentException(
+                    "Number of argument matchers passed to constructor differs " +
+                    "from number of method parameters.");
+
+            Method = method;
+            ArgumentMatchers = argumentMatchers;
         }
 
-        public bool MatchesCall(IMethod method, IImmutableList<ITypedArgument> arguments) {
-            if (!string.Equals(_methodName, method.Name, StringComparison.Ordinal))
+        public bool MatchesCall(IMethod calledMethod, IImmutableList<ITypedArgument> arguments) {
+            if (!Method.HasSameSignatureAs(calledMethod))
                 return false;
 
-            if (_argumentMatchers.Count != arguments.Count)
-                return false;
+            Debug.Assert(ArgumentMatchers.Count == arguments.Count);
 
-            for (int i = 0; i < _argumentMatchers.Count; i++) {
-                IArgumentMatcher matcher = _argumentMatchers[i];
+            for (int i = 0; i < ArgumentMatchers.Count; i++) {
+                IArgumentMatcher matcher = ArgumentMatchers[i];
                 ITypedArgument argument = arguments[i];
 
                 if (!Matches(argument, matcher)) {
@@ -60,7 +65,7 @@ namespace ASubstitute.Internal {
  
         public void VerifyIsComplete() {
             // TODO: More OO way like matchers foreach [ it | it.VerifyValid() ]
-            var missingMatcherPlaceholder = _argumentMatchers
+            var missingMatcherPlaceholder = ArgumentMatchers
                 .OfType<MissingArgumentMatcherPlaceholder>()
                 .FirstOrDefault();
 

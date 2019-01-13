@@ -1,15 +1,34 @@
+using System;
+using System.Linq;
+using System.Collections.Immutable;
 using System.Reflection;
 using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Internal {
     public class ProxyMethod : IMethod {
-        private readonly MethodInfo _method;
+        public string Name { get; }
 
-        public string Name 
-            => _method.Name;
+        public IImmutableList<Type> ParameterTypes { get; }
 
-        public ProxyMethod(MethodInfo method) {
-            _method = method;
+        private ProxyMethod(string name, IImmutableList<Type> parameterTypes) {
+            Name = name;
+            ParameterTypes = parameterTypes;
+        }
+
+        public static ProxyMethod From(MethodInfo method) {
+            var parameterTypes = method
+                .GetParameters()
+                .Select(p => p.ParameterType)
+                .ToImmutableList();
+ 
+            return new ProxyMethod(method.Name, parameterTypes);
+        }
+
+        public bool HasSameSignatureAs(IMethod other) {
+            if (!string.Equals(this.Name, other.Name, StringComparison.Ordinal)) 
+                return false;
+
+            return this.ParameterTypes.SequenceEqual(other.ParameterTypes);
         }
     }
 }

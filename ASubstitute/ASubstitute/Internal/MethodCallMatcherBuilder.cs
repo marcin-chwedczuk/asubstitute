@@ -18,7 +18,7 @@ namespace ASubstitute.Internal {
             CreateAllArgumentsMatchers();
 
             return new MethodCallMatcher(
-                _methodCall.CalledMethod.Name,
+                _methodCall.CalledMethod,
                 CreateAllArgumentsMatchers());
         }
 

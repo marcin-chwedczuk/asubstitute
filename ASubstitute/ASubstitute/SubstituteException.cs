@@ -1,6 +1,6 @@
 using System;
 
-namespace ASubstitute.Internal {
+namespace ASubstitute {
     public class SubstituteException : Exception {
         public SubstituteException(string message) : base(message) { }
     }

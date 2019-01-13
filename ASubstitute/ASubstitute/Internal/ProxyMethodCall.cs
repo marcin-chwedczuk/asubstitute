@@ -39,7 +39,7 @@ namespace ASubstitute.Internal {
                      (type, value) => new TypedArgument(type, value))
                 .ToImmutableList();
 
-            return new ProxyMethodCall(proxy, new ProxyMethod(method), typedArgs);
+            return new ProxyMethodCall(proxy, ProxyMethod.From(method), typedArgs);
         }
     }
 }
