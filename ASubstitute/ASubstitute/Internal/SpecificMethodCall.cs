@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using ASubstitute.Api;
-using ASubstitute.Api.Assertions;
+using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Internal {
     public class MethodSetup {

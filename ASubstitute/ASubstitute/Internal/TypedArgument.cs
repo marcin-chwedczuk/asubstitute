@@ -1,5 +1,5 @@
 using System;
-using ASubstitute.Api.Assertions;
+using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Internal {
     public class TypedArgument : ITypedArgument {

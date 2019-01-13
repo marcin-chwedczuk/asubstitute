@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using ASubstitute.Api.Assertions;
+using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Internal {
     class MethodCallHistory : IMethodCallHistory {

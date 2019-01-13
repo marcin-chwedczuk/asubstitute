@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Linq;
 using ASubstitute.Api;
-using ASubstitute.Api.Assertions;
+using ASubstitute.Api.BuildingBlocks;
 using ASubstitute.Internal;
 
 namespace ASubstitute.Buildin.Assertions {
