@@ -4,22 +4,22 @@ using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
     public class MethodSignatureMethodCallMatcher : IMethodCallMatcher {
-        private readonly IMethodCallMatcher _original;
+        private readonly IMethodCallMatcher _assertionCall;
 
         public IMethod Method
-            => _original.Method;
+            => _assertionCall.Method;
 
         public IImmutableList<IArgumentMatcher> ArgumentMatchers
-            => _original.ArgumentMatchers;
+            => _assertionCall.ArgumentMatchers;
 
         public MethodSignatureMethodCallMatcher(IMethodCallMatcher original) {
-            _original = original;
+            _assertionCall = original;
         }
 
-        public bool MatchesCall(IMethod method, IImmutableList<ITypedArgument> arguments) {
+        public bool MatchesCall(IMethodCall call) {
             // We ignore argument matchers
 
-            return this.Method.HasSameSignatureAs(method);
+            return this.Method.HasSameSignatureAs(call.CalledMethod);
         }
     }
 }

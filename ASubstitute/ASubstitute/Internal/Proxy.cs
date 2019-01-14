@@ -10,7 +10,7 @@ namespace ASubstitute.Internal {
         private readonly MethodCallHistory _methodCallHistory = new MethodCallHistory();
 
         // TODO: Make private
-        public IList<MethodSetup> MethodSetups { get; } = new List<MethodSetup>();
+        internal IList<MethodSetup> MethodSetups { get; } = new List<MethodSetup>();
 
         public Type ProxiedType { get; private set; }
         
@@ -31,7 +31,7 @@ namespace ASubstitute.Internal {
             else {
                 _methodCallHistory.AddCall(methodCall);
 
-                var recordedCall = FindFirstMatching(methodCall.CalledMethod, methodCall.PassedArguments);
+                var recordedCall = MethodSetups.FirstOrDefault(m => m.MatchesCall(methodCall));
                 if (recordedCall != null) {
                     var result = recordedCall.InvokeBehaviour(methodCall.PassedArguments);
 
@@ -49,12 +49,7 @@ namespace ASubstitute.Internal {
             _methodCallHistory.RemoveCall(call);
         }
 
-        public MethodSetup FindFirstMatching(ProxyMethod method, IImmutableList<TypedArgument> typedArgs) {
-            return MethodSetups
-                .FirstOrDefault(x => x.MatchesCall(method, typedArgs));
-        }
-
-        public MethodSetup FindCompatibleMethodSetup(MethodCallMatcher matcher) {
+        internal MethodSetup FindCompatibleMethodSetup(MethodCallMatcher matcher) {
             return MethodSetups
                 .SingleOrDefault(x => x.IsCompatible(matcher));
         }

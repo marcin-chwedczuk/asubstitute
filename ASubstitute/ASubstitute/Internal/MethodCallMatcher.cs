@@ -26,15 +26,15 @@ namespace ASubstitute.Internal {
             ArgumentMatchers = argumentMatchers;
         }
 
-        public bool MatchesCall(IMethod calledMethod, IImmutableList<ITypedArgument> arguments) {
-            if (!Method.HasSameSignatureAs(calledMethod))
+        public bool MatchesCall(IMethodCall call) {
+            if (!Method.HasSameSignatureAs(call.CalledMethod))
                 return false;
 
-            Debug.Assert(ArgumentMatchers.Count == arguments.Count);
+            Debug.Assert(ArgumentMatchers.Count == call.PassedArguments.Count);
 
             for (int i = 0; i < ArgumentMatchers.Count; i++) {
                 IArgumentMatcher matcher = ArgumentMatchers[i];
-                ITypedArgument argument = arguments[i];
+                ITypedArgument argument = call.PassedArguments[i];
 
                 if (!Matches(argument, matcher)) {
                     return false;

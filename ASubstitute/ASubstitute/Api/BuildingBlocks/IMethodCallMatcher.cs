@@ -7,6 +7,6 @@ namespace ASubstitute.Api.BuildingBlocks {
 
         IImmutableList<IArgumentMatcher> ArgumentMatchers { get; }
 
-        bool MatchesCall(IMethod method, IImmutableList<ITypedArgument> arguments);
+        bool MatchesCall(IMethodCall call);
     }
 }

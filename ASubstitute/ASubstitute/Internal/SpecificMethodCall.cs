@@ -6,7 +6,7 @@ using ASubstitute.Api;
 using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Internal {
-    public class MethodSetup {
+    class MethodSetup {
         public static readonly object NO_RESULT = new object();
 
         public readonly MethodCallMatcher _methodCallMatcher;
@@ -21,11 +21,8 @@ namespace ASubstitute.Internal {
             _recordedBehaviours.Enqueue(behaviour);
         }
 
-        public bool MatchesCall(ProxyMethod method, IImmutableList<TypedArgument> arguments) {
-            return _methodCallMatcher.MatchesCall(
-                method, 
-                // TOOD: Remove 'proteza'...
-                arguments.Cast<ITypedArgument>().ToImmutableList());
+        public bool MatchesCall(ProxyMethodCall call) {
+            return _methodCallMatcher.MatchesCall(call);
         }
 
         public object InvokeBehaviour(IImmutableList<TypedArgument> arguments) {

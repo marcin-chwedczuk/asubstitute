@@ -9,7 +9,7 @@ namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
             var matcher = new MethodSignatureMethodCallMatcher(assertionCall);
             
             int matchingCallsCount = methodCallHistory.GetCalledMethods() 
-                .Where(call => matcher.MatchesCall(call.CalledMethod, call.PassedArguments))
+                .Where(call => matcher.MatchesCall(call))
                 .Count();
 
             // TODO: Add proxy name and full method signature to error message.

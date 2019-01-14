@@ -16,7 +16,7 @@ namespace ASubstitute.Buildin.Assertions {
 
         public void Check(IMethodCallMatcher assertionCall, IMethodCallHistory methodCallHistory) {
             int matchingCallsCount = methodCallHistory.GetCalledMethods() 
-                .Where(call => assertionCall.MatchesCall(call.CalledMethod, call.PassedArguments))
+                .Where(call => assertionCall.MatchesCall(call))
                 .Count();
 
             if (matchingCallsCount != _times)
