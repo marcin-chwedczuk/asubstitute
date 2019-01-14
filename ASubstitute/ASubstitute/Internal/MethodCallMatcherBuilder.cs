@@ -46,11 +46,15 @@ namespace ASubstitute.Internal {
             var allArgumentsMatchers = ImmutableList.CreateBuilder<IArgumentMatcher>();
             var explicitMatchers = new Queue<IArgumentMatcher>(_explicitMatchers);
 
-            foreach(var (arg, index) in _methodCall.PassedArguments.ToValueIndexPairs()) {
-                IArgumentMatcher matcher = arg.HasDefaultValue
+            for (int i = 0; i < _methodCall.PassedArguments.Count; i++) {
+                Type parameterType = _methodCall.CalledMethod.ParameterTypes[i];
+                object argumentValue = _methodCall.PassedArguments[i];
+
+                // TODO: To extension method on type, isDefaultValue
+                IArgumentMatcher matcher = ReflectionUtils.IsDefaultValue(parameterType, argumentValue)
                     ? explicitMatchers.DequeueOrElse(() => 
-                            new MissingArgumentMatcherPlaceholder(_methodCall, index))
-                    : CreateMatcherFromArgumentValue(arg);
+                            new MissingArgumentMatcherPlaceholder(_methodCall, i))
+                    : CreateMatcherFromArgumentValue(parameterType, argumentValue);
                 
                 allArgumentsMatchers.Add(matcher);
             }
@@ -58,9 +62,9 @@ namespace ASubstitute.Internal {
             return allArgumentsMatchers.ToImmutable();
         }
 
-        private static IArgumentMatcher CreateMatcherFromArgumentValue(TypedArgument arg) {
-            var type = typeof(EqualToArgumentMatcher<>).MakeGenericType(arg.Type);
-            return (IArgumentMatcher) Activator.CreateInstance(type, arg.Value);
+        private static IArgumentMatcher CreateMatcherFromArgumentValue(Type parameterType, object argumentValue) {
+            var type = typeof(EqualToArgumentMatcher<>).MakeGenericType(parameterType);
+            return (IArgumentMatcher) Activator.CreateInstance(type, argumentValue);
         }
 
         public static MethodCallMatcherBuilder Create()

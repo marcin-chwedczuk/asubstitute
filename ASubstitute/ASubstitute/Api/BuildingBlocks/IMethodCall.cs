@@ -5,6 +5,6 @@ namespace ASubstitute.Api.BuildingBlocks {
     {
         IMethod CalledMethod { get; }
 
-        IImmutableList<ITypedArgument> PassedArguments { get; }
+        IImmutableList<object> PassedArguments { get; }
     }
 }

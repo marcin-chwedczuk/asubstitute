@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -25,13 +25,12 @@ namespace ASubstitute.Internal {
             return _methodCallMatcher.MatchesCall(call);
         }
 
-        public object InvokeBehaviour(IImmutableList<TypedArgument> arguments) {
+        public object InvokeBehaviour(IImmutableList<object> arguments) {
             IMethodBehaviour behaviour = _recordedBehaviours.Count > 1
                 ? _recordedBehaviours.Dequeue()
                 : _recordedBehaviours.Peek();
 
-            return behaviour.Invoke(
-                arguments.Select(x => x.Value).ToArray());
+            return behaviour.Invoke(arguments.ToArray());
         }
 
         public bool IsCompatible(MethodCallMatcher matcher)

@@ -34,9 +34,10 @@ namespace ASubstitute.Internal {
 
             for (int i = 0; i < ArgumentMatchers.Count; i++) {
                 IArgumentMatcher matcher = ArgumentMatchers[i];
-                ITypedArgument argument = call.PassedArguments[i];
+                Type parameterType = call.CalledMethod.ParameterTypes[i];
+                object argumentValue = call.PassedArguments[i];
 
-                if (!Matches(argument, matcher)) {
+                if (!Matches(parameterType, argumentValue, matcher)) {
                     return false;
                 }
             }
@@ -44,14 +45,14 @@ namespace ASubstitute.Internal {
             return true;
         }
 
-        private static bool Matches(ITypedArgument argument, IArgumentMatcher matcher) {
+        private static bool Matches(Type parameterType, object argumentValue, IArgumentMatcher matcher) {
             // Calls Matches<arg.Type>(arg.Value, matcher)
             var genericMethod = typeof(MethodCallMatcher)
                 .GetMethod(nameof(MatchesImpl), BindingFlags.NonPublic | BindingFlags.Static);
 
-            var concreteMethod = genericMethod.MakeGenericMethod(argument.Type);
+            var concreteMethod = genericMethod.MakeGenericMethod(parameterType);
 
-            var args = new[] { argument.Value, matcher };
+            var args = new[] { argumentValue, matcher };
             return (bool) concreteMethod.Invoke(null, args);
         }
 

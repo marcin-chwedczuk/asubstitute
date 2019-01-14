@@ -11,18 +11,14 @@ namespace ASubstitute.Internal {
 
         public ProxyMethod CalledMethod { get; }
 
-        public IImmutableList<TypedArgument> PassedArguments { get; }
+        public IImmutableList<object> PassedArguments { get; }
 
         IMethod IMethodCall.CalledMethod => CalledMethod;
-
-        IImmutableList<ITypedArgument> IMethodCall.PassedArguments => PassedArguments
-            .Cast<ITypedArgument>()
-            .ToImmutableList();
 
         private ProxyMethodCall(
                 Proxy proxy, 
                 ProxyMethod calledMethod, 
-                IImmutableList<TypedArgument> passedArguments)
+                IImmutableList<object> passedArguments)
         {
             Proxy = proxy;
             CalledMethod = calledMethod;
@@ -30,16 +26,11 @@ namespace ASubstitute.Internal {
         }
 
         public static ProxyMethodCall From(Proxy proxy, MethodInfo method, object[] arguments) {
-            var parametersTypes = method
-                .GetParameters()
-                .Select(p => p.ParameterType);
-
-            var typedArgs = parametersTypes
-                .Zip(arguments, 
-                     (type, value) => new TypedArgument(type, value))
-                .ToImmutableList();
-
-            return new ProxyMethodCall(proxy, ProxyMethod.From(method), typedArgs);
+            // TODO: ImmutableList -> ImmutableArray
+            return new ProxyMethodCall(
+                proxy, 
+                ProxyMethod.From(method), 
+                arguments.ToImmutableList());
         }
     }
 }
