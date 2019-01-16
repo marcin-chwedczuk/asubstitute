@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace ASubstitute.Internal {
     public static class ReflectionUtils {
@@ -28,6 +29,31 @@ namespace ASubstitute.Internal {
 
             object defaultValue = CreateDefaultValue(type);
             return object.Equals(defaultValue, value);
+        }
+
+        private static readonly IReadOnlyDictionary<Type, string> _csharpNameByType = new Dictionary<Type, string> {
+            [typeof(bool)] = "bool",
+            [typeof(byte)] = "byte",
+            [typeof(sbyte)] = "sbyte",
+            [typeof(short)] = "short",
+            [typeof(ushort)] = "ushort",
+            [typeof(int)] = "int",
+            [typeof(uint)] = "uint",
+            [typeof(long)] = "long",
+            [typeof(ulong)] = "ulong",
+            [typeof(string)] = "string",
+            [typeof(decimal)] = "decimal"
+        };
+
+        public static string GetCSharpNameOf(Type type) {
+            Type underlyingType = Nullable.GetUnderlyingType(type);
+            if (underlyingType != null)
+                return $"{GetCSharpNameOf(underlyingType)}?";
+
+            if (_csharpNameByType.TryGetValue(type, out var csharpTypeName))
+                return csharpTypeName;
+
+            return type.Name;
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using ASubstitute.Api;
+using ASubstitute.Internal;
 
 namespace ASubstitute.Buildin.ArgumentMatchers {
     public class AnyArgumentMatcher<T> : IArgumentMatcher<T> {
-        public bool Matches(T argumentValue) {
-            return true;
-        }
+        public bool Matches(T argumentValue)
+            => true;    
+        public string Describe()
+            => $"any<{ReflectionUtils.GetCSharpNameOf(typeof(T))}>";
 
         public override bool Equals(object obj) {
             return (obj is AnyArgumentMatcher<T>);

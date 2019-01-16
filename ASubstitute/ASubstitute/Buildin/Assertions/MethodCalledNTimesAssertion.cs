@@ -20,7 +20,10 @@ namespace ASubstitute.Buildin.Assertions {
                 .Count();
 
             if (matchingCallsCount != _times)
-                throw new SubstituteException($"Expected: {_times} but got: {matchingCallsCount}");
+                throw new SubstituteException(
+                    $"Expected *{_times}* call(s) matching assertion:\n" +
+                    $"\t{assertionCall.Describe()}\n" +
+                    $"but got *{matchingCallsCount}* matching calls.");
         }
     }
 }

@@ -29,7 +29,7 @@ namespace ASubstitute.Internal {
             // TODO: ImmutableList -> ImmutableArray
             return new ProxyMethodCall(
                 proxy, 
-                ProxyMethod.From(method), 
+                ProxyMethod.From(proxy, method), 
                 arguments.ToImmutableList());
         }
     }

@@ -9,15 +9,15 @@ namespace ASubstitute.Buildin.ArgumentMatchers {
             _value = value;
         }
 
-        public bool Matches(T argumentValue) {
-            return AreEqual(_value, argumentValue);
-        }
-        
-        public override bool Equals(object obj) {
-            return 
-                (obj is EqualToArgumentMatcher<T> other) && 
+        public bool Matches(T argumentValue)
+            => AreEqual(_value, argumentValue);
+
+        public string Describe()
+            => _value?.ToString() ?? "null";
+
+        public override bool Equals(object obj)
+            => (obj is EqualToArgumentMatcher<T> other) && 
                 AreEqual(this._value, other._value);
-        }
 
         public override int GetHashCode()
             => _value?.GetHashCode() ?? 0;

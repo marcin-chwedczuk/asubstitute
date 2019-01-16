@@ -13,9 +13,11 @@ namespace ASubstitute.Internal {
         internal IList<MethodSetup> MethodSetups { get; } = new List<MethodSetup>();
 
         public Type ProxiedType { get; private set; }
+        internal string Name { get; private set; }
         
-        internal void Init(Type proxiedType) {
+        internal void Init(Type proxiedType, string proxyName) {
             ProxiedType = proxiedType;
+            Name = proxyName;
         }
 
         protected override object Invoke(MethodInfo targetMethod, object[] args) {

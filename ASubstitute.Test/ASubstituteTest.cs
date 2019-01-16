@@ -464,6 +464,27 @@ namespace ASubstitute.Test {
         }
 
         [Fact]
+        public void Mock_can_be_named() {
+            // Arrange
+            var unnamed = Substitute.For<ITestInterface>();
+            var foo = Substitute.For<ITestInterface>("foo");
+
+            // Assert
+            void failingAssertion(ITestInterface mock) {
+                mock.Received(1)
+                    .AddTwoIntegers(Arg.Any<int>(), Arg.Any<int>());
+            };
+
+            var unnamedException = Record.Exception(() => failingAssertion(unnamed));
+            unnamedException.Message
+                .Should().Contain($"{nameof(ITestInterface)}.{nameof(ITestInterface.AddTwoIntegers)}(any<int>, any<int>)");
+
+            var fooException = Record.Exception(() => failingAssertion(foo));
+            fooException.Message
+                .Should().Contain($"foo.{nameof(ITestInterface.AddTwoIntegers)}(any<int>, any<int>)");
+        }
+
+        [Fact]
         public void Test1()
         {
             var calculator = Substitute.For<ITestInterface>();

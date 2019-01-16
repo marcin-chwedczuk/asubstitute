@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 
 namespace ASubstitute.Api.BuildingBlocks {
     public interface IMethod {
-        // TODO: Add proxy namespace Name
+        string ProxyName { get; }
 
         string Name { get; }
 

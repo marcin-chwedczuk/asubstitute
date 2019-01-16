@@ -9,9 +9,11 @@ namespace ASubstitute.Buildin.ArgumentMatchers {
             this.predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
         }
 
-        public bool Matches(T argumentValue) {
-            return predicate(argumentValue);
-        }
+        public bool Matches(T argumentValue)
+            => predicate(argumentValue);
+
+        public string Describe()
+            => predicate.ToString();
         
         public override bool Equals(object obj) {
             return 
