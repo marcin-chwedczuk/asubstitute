@@ -23,12 +23,5 @@ namespace ASubstitute.Internal {
  
             return new ProxyMethod(method.Name, parameterTypes);
         }
-
-        public bool HasSameSignatureAs(IMethod other) {
-            if (!string.Equals(this.Name, other.Name, StringComparison.Ordinal)) 
-                return false;
-
-            return this.ParameterTypes.SequenceEqual(other.ParameterTypes);
-        }
     }
 }

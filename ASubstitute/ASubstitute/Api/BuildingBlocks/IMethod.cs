@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace ASubstitute.Api.BuildingBlocks {
     public interface IMethod {
@@ -8,8 +9,14 @@ namespace ASubstitute.Api.BuildingBlocks {
         string Name { get; }
 
         IImmutableList<Type> ParameterTypes { get; }
+    }
 
-        // TODO: Extract to extension method
-        bool HasSameSignatureAs(IMethod other);
+    public static class IMethodExtensionMethods {
+        public static bool HasSameSignatureAs(this IMethod @this, IMethod other) {
+            if (!string.Equals(@this.Name, other.Name, StringComparison.Ordinal)) 
+                return false;
+
+            return @this.ParameterTypes.SequenceEqual(other.ParameterTypes);
+        }
     }
 }
