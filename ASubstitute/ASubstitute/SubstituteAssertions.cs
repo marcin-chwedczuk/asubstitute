@@ -5,7 +5,7 @@ namespace ASubstitute {
     public static class SubstituteAssertions {
         public static T Received<T>(this T mock, int times) {
             SubstituteContext.RegisterAssertion(
-                new MethodCalledNTimesAssertion(times));
+                new ReceivedAssertion(times));
 
             return mock;
         }

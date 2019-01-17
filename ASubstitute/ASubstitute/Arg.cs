@@ -13,7 +13,7 @@ namespace ASubstitute {
 
         public static T Is<T>(T value) {
             SubstituteContext.AddArgumentMatcher(
-                new EqualToArgumentMatcher<T>(value));
+                new IsArgumentMatcher<T>(value));
 
             return default(T);
         }

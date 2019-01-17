@@ -2,10 +2,10 @@
 using ASubstitute.Api;
 
 namespace ASubstitute.Buildin.ArgumentMatchers {
-    public class EqualToArgumentMatcher<T> : IArgumentMatcher<T> {
+    public class IsArgumentMatcher<T> : IArgumentMatcher<T> {
         private readonly T _value;
 
-        public EqualToArgumentMatcher(T value) {
+        public IsArgumentMatcher(T value) {
             _value = value;
         }
 
@@ -16,7 +16,7 @@ namespace ASubstitute.Buildin.ArgumentMatchers {
             => _value?.ToString() ?? "null";
 
         public override bool Equals(object obj)
-            => (obj is EqualToArgumentMatcher<T> other) && 
+            => (obj is IsArgumentMatcher<T> other) && 
                 AreEqual(this._value, other._value);
 
         public override int GetHashCode()

@@ -16,7 +16,7 @@ namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
             // Assert
             Action assertion = () => {
                 substitute.ReceivedWithAnyArgs()
-                    .AddTwoIntegers(0, 0);
+                    .AddTwoIntegers(1, 1);
             };
 
             assertion.Should().NotThrow();
@@ -34,10 +34,12 @@ namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
             // Assert
             Action assertion = () => {
                 substitute.ReceivedWithAnyArgs()
-                    .AddTwoIntegers(0, 0);
+                    .AddTwoIntegers(1, 1);
             };
 
             assertion.Should().Throw<SubstituteException>();
         }
+
+        // TODO: Test na received AddTwoIntegers(0,0) and matcherplaceholder.
     }
 }

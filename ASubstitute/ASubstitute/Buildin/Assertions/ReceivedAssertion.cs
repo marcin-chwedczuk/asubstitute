@@ -5,10 +5,10 @@ using ASubstitute.Api.BuildingBlocks;
 using ASubstitute.Internal;
 
 namespace ASubstitute.Buildin.Assertions {
-    class MethodCalledNTimesAssertion : IMethodCallHistoryAssertion {
+    class ReceivedAssertion: IMethodCallHistoryAssertion {
         private readonly int _times;
 
-        public MethodCalledNTimesAssertion(int times) {
+        public ReceivedAssertion(int times) {
             if (times < 0) throw new ArgumentException($"{nameof(times)} cannot be negative.");
 
             _times = times;

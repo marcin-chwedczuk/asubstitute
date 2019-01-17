@@ -63,7 +63,7 @@ namespace ASubstitute.Internal {
         }
 
         private static IArgumentMatcher CreateMatcherFromArgumentValue(Type parameterType, object argumentValue) {
-            var type = typeof(EqualToArgumentMatcher<>).MakeGenericType(parameterType);
+            var type = typeof(IsArgumentMatcher<>).MakeGenericType(parameterType);
             return (IArgumentMatcher) Activator.CreateInstance(type, argumentValue);
         }
 
