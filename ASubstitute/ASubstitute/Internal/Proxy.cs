@@ -24,11 +24,15 @@ namespace ASubstitute.Internal {
             var methodCall = ProxyMethodCall.From(this, targetMethod, args);
             
             // TODO: CQS broken?
+
+            // TODO: Move CurrentMethod & ArgumentMatchers back to context?
             var methodCallMatcher = ThreadLocalContext.SetCurrentMethodCall(methodCall);
             var activeAssertion = ThreadLocalContext.ConsumeAssertion();
 
             if (activeAssertion != null) {
-                activeAssertion.Check(methodCallMatcher, _methodCallHistory);
+                activeAssertion.Check(
+                    new AssertionCall(methodCallMatcher), 
+                    _methodCallHistory);
             }
             else {
                 _methodCallHistory.AddCall(methodCall);

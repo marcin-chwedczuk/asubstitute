@@ -12,21 +12,4 @@ namespace ASubstitute.Api.BuildingBlocks {
 
         bool MatchesCall(IMethodCall call);
     }
-
-    public static class IMethodCallMatcherExtensionMethods {
-        public static string Describe(this IMethodCallMatcher @this) {
-            var matchersDescriptions = @this
-                .ArgumentMatchers
-                .Select(m => m.Describe());
-
-            return new StringBuilder()
-                .Append(@this.Method.ProxyName)
-                .Append('.')
-                .Append(@this.Method.Name)
-                .Append('(')
-                .Append(string.Join(", ", matchersDescriptions))
-                .Append(')')
-                .ToString();
-        }
-    }
 }

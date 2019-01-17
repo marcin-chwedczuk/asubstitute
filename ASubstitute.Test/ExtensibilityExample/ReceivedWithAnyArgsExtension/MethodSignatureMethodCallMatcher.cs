@@ -4,7 +4,7 @@ using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
     public class MethodSignatureMethodCallMatcher : IMethodCallMatcher {
-        private readonly IMethodCallMatcher _assertionCall;
+        private readonly IAssertionCall _assertionCall;
 
         public IMethod Method
             => _assertionCall.Method;
@@ -12,7 +12,7 @@ namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
         public IImmutableList<IArgumentMatcher> ArgumentMatchers
             => _assertionCall.ArgumentMatchers;
 
-        public MethodSignatureMethodCallMatcher(IMethodCallMatcher original) {
+        public MethodSignatureMethodCallMatcher(IAssertionCall original) {
             _assertionCall = original;
         }
 

@@ -5,7 +5,7 @@ using ASubstitute.Internal;
 
 namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
     public class ReceivedWithAnyArgsAssertion : IMethodCallHistoryAssertion {
-        public void Check(IMethodCallMatcher assertionCall, IMethodCallHistory methodCallHistory) {
+        public void Check(IAssertionCall assertionCall, IMethodCallHistory methodCallHistory) {
             var matcher = new MethodSignatureMethodCallMatcher(assertionCall);
             
             int matchingCallsCount = methodCallHistory.GetCalledMethods() 
@@ -18,7 +18,6 @@ namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
                 throw new SubstituteException(
                     $"Expecting to receive at least a single call to method {matcher.Method.Name} " +
                     "but none was received.");
- 
         }
     }
 }

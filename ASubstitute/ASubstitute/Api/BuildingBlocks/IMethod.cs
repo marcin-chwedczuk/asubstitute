@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ASubstitute.Api.BuildingBlocks {
     public interface IMethod {
+        // TODO: ProxyName does not belong here, maybe should be move up 
         string ProxyName { get; }
 
         string Name { get; }

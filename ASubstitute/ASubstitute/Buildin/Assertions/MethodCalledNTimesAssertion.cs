@@ -14,9 +14,12 @@ namespace ASubstitute.Buildin.Assertions {
             _times = times;
         }
 
-        public void Check(IMethodCallMatcher assertionCall, IMethodCallHistory methodCallHistory) {
-            int matchingCallsCount = methodCallHistory.GetCalledMethods() 
-                .Where(call => assertionCall.MatchesCall(call))
+        public void Check(IAssertionCall assertionCall, IMethodCallHistory methodCallHistory) {
+            var matcher = assertionCall.ToMethodCallMatcher();
+
+            int matchingCallsCount = methodCallHistory
+                .GetCalledMethods() 
+                .Where(matcher.MatchesCall)
                 .Count();
 
             if (matchingCallsCount != _times)
