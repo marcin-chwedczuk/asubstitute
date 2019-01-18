@@ -1,7 +1,7 @@
 using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Api {
-    interface IMethodCallHistoryAssertion {
+    public interface IMethodCallHistoryAssertion {
         void Check(IAssertionCall assertionCall, IMethodCallHistory methodCallHistory);
     }
 }

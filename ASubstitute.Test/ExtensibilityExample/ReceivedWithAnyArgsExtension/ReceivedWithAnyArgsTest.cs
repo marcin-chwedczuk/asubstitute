@@ -5,6 +5,8 @@ using FluentAssertions;
 using Xunit;
 
 namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
+    // TODO: Move to a separate assembly - this assembly has internalsVisible: true
+
     public class ReceivedWithAnyArgsTest {
         [Fact]
         public void Assertion_passes_when_method_was_called() {
@@ -16,7 +18,7 @@ namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
             // Assert
             Action assertion = () => {
                 substitute.ReceivedWithAnyArgs()
-                    .AddTwoIntegers(1, 1);
+                    .AddTwoIntegers(0, 0);
             };
 
             assertion.Should().NotThrow();
@@ -34,7 +36,7 @@ namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
             // Assert
             Action assertion = () => {
                 substitute.ReceivedWithAnyArgs()
-                    .AddTwoIntegers(1, 1);
+                    .AddTwoIntegers(0, 0);
             };
 
             assertion.Should().Throw<SubstituteException>();

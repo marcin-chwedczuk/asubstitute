@@ -10,7 +10,5 @@ namespace ASubstitute.Api {
 
         internal static void RegisterAssertion(IMethodCallHistoryAssertion assertion)
             => Internal.ThreadLocalContext.RegisterAssertion(assertion);
-
-    
     }
 }

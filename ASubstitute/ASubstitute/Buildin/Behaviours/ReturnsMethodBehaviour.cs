@@ -1,10 +1,10 @@
 ﻿using ASubstitute.Api;
 
 namespace ASubstitute.Buildin.Behaviours {
-    public class ReturnMethodBehaviour : IMethodBehaviour {
+    public class ReturnsMethodBehaviour : IMethodBehaviour {
         private readonly object _value;
 
-        public ReturnMethodBehaviour(object value) {
+        public ReturnsMethodBehaviour(object value) {
             this._value = value;
         }
 
