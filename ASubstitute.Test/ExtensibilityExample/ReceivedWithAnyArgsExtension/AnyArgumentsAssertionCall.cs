@@ -6,11 +6,14 @@ using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Test.ExtensibilityExample.ReceivedWithAnyArgs {
     public class AnyArgumentsAssertionCall: IAssertionCall {
+        public IMock Mock { get; }
+
         public IMethod Method { get; }
 
         public IImmutableList<IArgumentMatcher> ArgumentMatchers { get; }
 
         public AnyArgumentsAssertionCall(IAssertionCall callWithAnyArgs) {
+            Mock = callWithAnyArgs.Mock;
             Method = callWithAnyArgs.Method;
             ArgumentMatchers = GenerateAnyMatchers(callWithAnyArgs.Method);
         }

@@ -4,20 +4,21 @@ using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Internal {
     public class AssertionCall : IAssertionCall {
+        public IMock Mock { get; }
+
         public IMethod Method { get; }
 
         public IImmutableList<IArgumentMatcher> ArgumentMatchers { get; }
 
         public AssertionCall(
+            IMock mock,
             IMethod method, 
             IImmutableList<IArgumentMatcher> argumentMatchers)
         {
+            Mock = mock;
             Method = method;
             ArgumentMatchers = argumentMatchers;    
         }
-
-        public AssertionCall(MethodCallMatcher matcher)
-            : this(matcher.Method, matcher.ArgumentMatchers) { }
 
         public IMethodCallMatcher ToMethodCallMatcher() {
             return new MethodCallMatcher(Method, ArgumentMatchers);

@@ -1,5 +1,6 @@
 ﻿using System;
 using ASubstitute.Api;
+using ASubstitute.Api.BuildingBlocks;
 
 namespace ASubstitute.Internal {
     class MissingArgumentMatcherPlaceholder : IArgumentMatcher {
@@ -12,9 +13,9 @@ namespace ASubstitute.Internal {
         public string Describe()
             => throw new NotImplementedException();
 
-        private static string CreateMessage(ProxyMethodCall methodCall, int argumentPosition)
+        private static string CreateMessage(IMethodCall methodCall, int argumentPosition)
             =>  $"Invalid usage of argument matchers detected in call to " +
-                $"{methodCall.Proxy.ProxiedType.Name}.{methodCall.CalledMethod.Name} method. " +
+                $"{methodCall.Mock.Name}.{methodCall.CalledMethod.Name} method. " +
                 $"Missing argument matcher for parameter on position {argumentPosition}. " +
                 $"Please remember that all default values (null, 0, false, default) " +
                 $"must be replaced by argument matchers in *setup* calls.";

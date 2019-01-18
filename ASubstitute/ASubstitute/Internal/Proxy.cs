@@ -3,21 +3,23 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Immutable;
 using System.Collections.Generic;
+using ASubstitute.Api;
 
 namespace ASubstitute.Internal {
     // Must be public due to DispatchProxy requirements.
-    public class Proxy : DispatchProxy {
+    public class Proxy : DispatchProxy, IMock {
         private readonly MethodCallHistory _methodCallHistory = new MethodCallHistory();
 
         // TODO: Make private
         internal IList<MethodSetup> MethodSetups { get; } = new List<MethodSetup>();
 
-        public Type ProxiedType { get; private set; }
-        internal string Name { get; private set; }
+        public Type MockedType { get; private set; }
+
+        public string Name { get; private set; }
         
-        internal void Init(Type proxiedType, string proxyName) {
-            ProxiedType = proxiedType;
-            Name = proxyName;
+        internal void Init(Type mockedType, string name) {
+            MockedType = mockedType;
+            Name = name;
         }
 
         protected override object Invoke(MethodInfo targetMethod, object[] args) {
@@ -31,7 +33,7 @@ namespace ASubstitute.Internal {
 
             if (activeAssertion != null) {
                 activeAssertion.Check(
-                    new AssertionCall(methodCallMatcher), 
+                    new AssertionCall(this, methodCallMatcher.Method, methodCallMatcher.ArgumentMatchers), 
                     _methodCallHistory);
             }
             else {

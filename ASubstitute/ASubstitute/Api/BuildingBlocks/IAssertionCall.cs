@@ -5,6 +5,8 @@ using ASubstitute.Internal;
 
 namespace ASubstitute.Api.BuildingBlocks {
     public interface IAssertionCall {
+        IMock Mock { get; }
+
         IMethod Method { get; }
 
         IImmutableList<IArgumentMatcher> ArgumentMatchers { get; }
@@ -17,7 +19,7 @@ namespace ASubstitute.Api.BuildingBlocks {
                 .Select(m => m.Describe());
 
             return new StringBuilder()
-                .Append(@this.Method.ProxyName)
+                .Append(@this.Mock.Name)
                 .Append('.')
                 .Append(@this.Method.Name)
                 .Append('(')

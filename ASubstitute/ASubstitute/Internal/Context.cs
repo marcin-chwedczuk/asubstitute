@@ -41,7 +41,7 @@ namespace ASubstitute.Internal {
         public void RegisterBehaviour(IMethodBehaviour behaviour) {
             _methodCallMatcher.VerifyIsComplete();
 
-            var proxy = _currentMethodCall.Proxy;
+            var proxy = (Proxy)_currentMethodCall.Mock;
 
             // TODO: FindOrCreate ?
             MethodSetup existing = 

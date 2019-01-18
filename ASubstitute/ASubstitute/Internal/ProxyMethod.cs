@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Immutable;
 using System.Reflection;
 using ASubstitute.Api.BuildingBlocks;
+using ASubstitute.Api;
 
 namespace ASubstitute.Internal {
     public class ProxyMethod : IMethod {
@@ -18,13 +19,13 @@ namespace ASubstitute.Internal {
             ParameterTypes = parameterTypes;
         }
 
-        public static ProxyMethod From(Proxy proxy, MethodInfo method) {
+        public static ProxyMethod From(IMock mock, MethodInfo method) {
             var parameterTypes = method
                 .GetParameters()
                 .Select(p => p.ParameterType)
                 .ToImmutableList();
  
-            return new ProxyMethod(proxy.Name, method.Name, parameterTypes);
+            return new ProxyMethod(mock.Name, method.Name, parameterTypes);
         }
     }
 }

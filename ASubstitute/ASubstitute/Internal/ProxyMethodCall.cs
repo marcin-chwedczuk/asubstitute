@@ -4,32 +4,31 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
 using ASubstitute.Api.BuildingBlocks;
+using ASubstitute.Api;
 
 namespace ASubstitute.Internal {
     class ProxyMethodCall : IMethodCall {
-        public Proxy Proxy { get; }
+        public IMock Mock { get; }
 
-        public ProxyMethod CalledMethod { get; }
+        public IMethod CalledMethod { get; }
 
         public IImmutableList<object> PassedArguments { get; }
 
-        IMethod IMethodCall.CalledMethod => CalledMethod;
-
         private ProxyMethodCall(
-                Proxy proxy, 
-                ProxyMethod calledMethod, 
+                IMock proxy, 
+                IMethod calledMethod, 
                 IImmutableList<object> passedArguments)
         {
-            Proxy = proxy;
+            Mock = proxy;
             CalledMethod = calledMethod;
             PassedArguments = passedArguments;
         }
 
-        public static ProxyMethodCall From(Proxy proxy, MethodInfo method, object[] arguments) {
+        public static ProxyMethodCall From(IMock mock, MethodInfo method, object[] arguments) {
             // TODO: ImmutableList -> ImmutableArray
             return new ProxyMethodCall(
-                proxy, 
-                ProxyMethod.From(proxy, method), 
+                mock, 
+                ProxyMethod.From(mock, method), 
                 arguments.ToImmutableList());
         }
     }
